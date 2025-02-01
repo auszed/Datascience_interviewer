@@ -1,4 +1,3 @@
-from openai import OpenAI
 import random
 from typing import Dict, Any
 import json
@@ -20,6 +19,7 @@ def get_completion_from_messages(messages, model, temperature=0, max_tokens_valu
 
 
 def select_random_topics(topics, num_topics=5):
+    """Select random topics."""
     selected_topics = random.sample(topics, num_topics)
     return selected_topics
 
