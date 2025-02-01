@@ -1,10 +1,6 @@
 import streamlit as st
 from openai import OpenAI
-
-# other files to import
-import json
-import re
-from helper.helper import parse_conversation, select_random_test, select_random_topics, get_completion_from_messages
+from helper.helper_app import select_random_topics
 
 
 # --------------------
@@ -75,7 +71,8 @@ data_science_topics = [
     "Time Series Analysis", "Spark", "Model Deployment and Monitoring",
     "Reinforcement Learning", "Data Ethics and Privacy", "Cloud Computing for Data Science"
 ]
-selected_themes_topics = select_random_topics(data_science_topics, num_topics= 5)
+selected_themes_topics = select_random_topics(data_science_topics, num_topics=5)
+
 # --------------------
 # Sidebar
 # --------------------
@@ -85,6 +82,7 @@ with st.sidebar:
     if st.toggle("API_local"):
         import helper.creden as cre
         client = OpenAI(api_key=cre.OPENAI_API_KEY)
+
     else:
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
 
