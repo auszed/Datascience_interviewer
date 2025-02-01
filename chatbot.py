@@ -85,6 +85,7 @@ with st.sidebar:
 
     else:
         openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
+        client = OpenAI(api_key=openai_api_key)
 
     model_selection = st.sidebar.selectbox(
         "Select the model version",
