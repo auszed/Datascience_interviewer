@@ -82,9 +82,9 @@ with st.sidebar:
     if st.toggle("API_local"):
         import helper.creden as cre
         client = OpenAI(api_key=cre.OPENAI_API_KEY)
-
     else:
-        openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
+        openai_api_key = st.secrets["key_open"]
+        # openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
         client = OpenAI(api_key=openai_api_key)
 
     model_selection = st.sidebar.selectbox(
