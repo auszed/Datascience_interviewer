@@ -207,7 +207,8 @@ if prompt := st.chat_input():
 
     # Prepare messages for API request (including system context)
     full_conversation = context + st.session_state.messages
-    response = client.chat.completions.create(model=model_selection, messages=full_conversation)
+    response = client.chat.completions.create(model=model_selection, messages=full_conversation, temperature =0.4,
+                                              max_tokens=1200)
 
     # Get response and update session state
     msg = response.choices[0].message.content
