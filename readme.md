@@ -1,325 +1,78 @@
-# News Agency: Filter of the News
+# Interviewer  for data science
 
 > [!important]  
 > This is a summary of the project; all the information can be found here.
 
-![robot scanning](img/intro.jpg)
+![robot scanning](img/cover.jpg)
 
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Dataset](#dataset)
-3. [Objectives](#objectives)
-4. [EDA Insights](#eda-insights)
-5. [Engineered Features](#engineered-features)
-6. [Model Selection](#model-selection)
-7. [Model Explainability](#model-explainability)
-8. [Prediction Service](#prediction-service)
-9. [Next Steps](#next-steps)
+2. [Experimentation](#Experimentation)
+3. [App](#App)
 
----
+## Introduction
 
-[//]: # (## Introduction)
+The idea is to create an app that allows us to experience the types of questions we will receive in a data science interview.
 
-[//]: # ()
-[//]: # (Our company leverages advanced AI technology to revolutionize how people consume news. By aggregating news from diverse and trusted websites, we create concise summaries that are transformed into engaging 2-3 minute audio clips. This service enables users to stay informed about global events efficiently, even with a busy schedule.)
+For that, we prepare a serie of experiments that help us decide, the best prompt.
 
-[//]: # ()
-[//]: # (![working hard]&#40;img/working_hard.jpg&#41;)
+-----
+## Experimentation
 
-[//]: # ()
-[//]: # (### Key Features)
+### Zero-Shot Prompting  
+In this experiment, the model did not behave correctly, requiring further experimentation.  
 
-[//]: # (- **Customizable Content**: Users can select specific topics or areas of interest, such as politics, technology, sports, or entertainment.)
+Here its the notebook:
+[001_experiment.ipynb](001_experiment.ipynb)
 
-[//]: # (- **Convenient Audio Format**: Hands-free news consumption is ideal for multitasking, commuting, or on-the-go lifestyles.)
+### Few-Shot Prompting  
+For this experiment, we carefully selected the questions to include. While the model generally performed correctly, some inconsistencies remained.  
 
-[//]: # (- **Timely Updates**: Frequent updates ensure users have access to the latest developments.)
+Here its the notebook:
+[002_experiment.ipynb](002_experiment.ipynb)
 
-[//]: # ()
-[//]: # (This innovative approach addresses the growing demand for quick, personalized, and accessible news, creating a unique value proposition in the digital media landscape.)
+### Chain of Thought  
+We applied a variation of this technique by explicitly structuring our questions to guide the model’s reasoning process. This approach allowed the model to follow a series of logical steps.  
 
-[//]: # ()
-[//]: # (To succeed, we must validate the news sources. Our goal is to develop an algorithm that detects the veracity of news extracted from various sources.)
+Here its the notebook:
+[003_experiment.ipynb](003_experiment.ipynb)
 
-[//]: # ()
-[//]: # (---)
+### Generated Knowledge & Maieutic Prompting  
+We designed structured questions at an expert-level data science standard, covering specific themes. These questions served as references for further refinement and ensured the model maintained a structured questioning approach.  
 
-[//]: # ()
-[//]: # (## Dataset)
+Here its the notebook:
+[004_experiment.ipynb](004_experiment.ipynb)
 
-[//]: # ()
-[//]: # (The dataset for this project can be found on [Kaggle]&#40;https://www.kaggle.com/datasets/emineyetm/fake-news-detection-datasets&#41;.)
+### Detailing Thinking  
+In this stage, we added final refinements, incorporating `<thinking>` and `<answer>` XML tags. This setup allowed us to observe the model’s reasoning process while maintaining control over its output. By hiding the reasoning step, we ensured that the model would first generate structured thoughts before providing an answer.  
 
-[//]: # ()
-[//]: # (- **Labels**:  )
+The final iteration of the prompt included several specific elements, such as a JSON example to format the output. Additionally, we enforced a rule preventing the model from generating responses beyond the last question.  
 
-[//]: # (  - 0 = Real news  )
+A key observation throughout the experimentation was that attempts to steer the conversation toward unrelated topics appeared to function as intended. However, further analysis is required to assess whether emerging techniques could potentially bypass the model’s security constraints.
 
-[//]: # (  - 1 = Fake news  )
+Here its the notebook:
+[005_experiment.ipynb](005_experiment.ipynb)
+-----
+## App
 
-[//]: # ()
-[//]: # (- **Dataset Split**:)
+IN this case the app its develop using streamlit because it was the faster 
+way to create a minimum viable product, so we could test the idea, before launching
+the product with complex development.
 
-[//]: # (  - 80% for training)
+Here we could find the app
 
-[//]: # (  - 10% for validation)
+[!app link](https://datascienceinterviewer.streamlit.app/)
 
-[//]: # (  - 10% for testing  )
+-----
+## Next Steps
 
-[//]: # ()
-[//]: # (To maintain consistent proportions, we applied stratification when combining the datasets. Additionally, we sampled 30% of the training data for faster hyperparameter testing.)
 
-[//]: # ()
-[//]: # (---)
+- Experiments with RAG augmentation
 
-[//]: # ()
-[//]: # (## Objectives)
+- Add a language selection
 
-[//]: # ()
-[//]: # (> **To develop a system that detects fake news**)
-
-[//]: # ()
-[//]: # (### Sub-Objectives:)
-
-[//]: # (1. Perform in-depth exploratory data analysis &#40;EDA&#41; of the datasets.)
-
-[//]: # (2. Engineer predictive features from the data.)
-
-[//]: # (3. Develop a baseline model.)
-
-[//]: # (4. Test at least two advanced models:)
-
-[//]: # (   - Roberta)
-
-[//]: # (   - DistilBERT)
-
-[//]: # (5. Analyze model predictions to understand feature importance.)
-
-[//]: # (6. Deploy the model using MLflow.)
-
-[//]: # ()
-[//]: # (---)
-
-[//]: # ()
-[//]: # (## EDA Insights)
-
-[//]: # ()
-[//]: # (### Key Findings:)
-
-[//]: # (- The dataset is imbalanced &#40;~46% on one side&#41;, but manageable with weights.  )
-
-[//]: # (  ![Data Proportions]&#40;img/proportion.png&#41;  )
-
-[//]: # ()
-[//]: # (- Differences in the total length of fake vs. real news are significant.  )
-
-[//]: # (  ![Total Length]&#40;img/total_length.png&#41;  )
-
-[//]: # ()
-[//]: # (- By leveraging categories, we observed two predictable subsets, requiring further validation.  )
-
-[//]: # (- Data was filtered to include only entries after January 2016.  )
-
-[//]: # (  ![Time Analysis]&#40;img/time.png&#41;  )
-
-[//]: # ()
-[//]: # (- Token similarities confirm effective feature space organization.)
-
-[//]: # ()
-[//]: # (Find the full EDA notebook here: [001_EDA]&#40;001_EDA.ipynb&#41;)
-
-[//]: # ()
-[//]: # (---)
-
-[//]: # ()
-[//]: # (## Engineered Features)
-
-[//]: # ()
-[//]: # (### Extracted Features:)
-
-[//]: # (1. **Word Count Features**:)
-
-[//]: # (   - Total word count)
-
-[//]: # (   - Unique word count)
-
-[//]: # (   - Stopword count)
-
-[//]: # (   - Title word count)
-
-[//]: # (2. **Punctuation Features**:)
-
-[//]: # (   - Punctuation count)
-
-[//]: # (   - Question mark count)
-
-[//]: # (   - Exclamation mark count)
-
-[//]: # (3. **Word Length Features**:)
-
-[//]: # (   - Average word length)
-
-[//]: # (   - Total text length)
-
-[//]: # (   - Line breaks)
-
-[//]: # (4. **Derived Features**:)
-
-[//]: # (   - Unique word percentage)
-
-[//]: # (   - Punctuation percentage  )
-
-[//]: # ()
-[//]: # (Unnecessary characters and parentheses were removed during preprocessing.)
-
-[//]: # ()
-[//]: # (Overfitting was identified in early models due to feature complexity, leading to feature reduction in later iterations.)
-
-[//]: # ()
-[//]: # (---)
-
-[//]: # ()
-[//]: # (## Model Selection)
-
-[//]: # ()
-[//]: # (### Baseline Model:)
-
-[//]: # (- Logistic Regression achieved an F1 score of 98%.  )
-
-[//]: # (  Notebook: [002_basemodel]&#40;002_basemodel.ipynb&#41;  )
-
-[//]: # ()
-[//]: # (### Advanced Models:)
-
-[//]: # (- Used LIME for interpretability: [003_XAI]&#40;003_XAI.ipynb&#41;  )
-
-[//]: # (- Experimented with Roberta and DistilBERT for hyperparameter tuning:  )
-
-[//]: # (  - [005_Roberta Hyperparameters]&#40;005_roberta_hyperparameters_experiment.ipynb&#41;  )
-
-[//]: # (  - [006_DistilBERT Hyperparameters]&#40;006_distilbert_hyperparameters_experiment.ipynb&#41;  )
-
-[//]: # ()
-[//]: # ()
-[//]: # (| **Model**                             | **Train F1** | **Train Loss** | **Val Accuracy** | **Val F1** | **Model Name**  |)
-
-[//]: # (|---------------------------------------|--------------|----------------|------------------|------------|-----------------|)
-
-[//]: # (| `training_Fake news comments_trial_5` | **99.32%**   | 50.04%         | **99.56%**       | **99.60%** | roberta-base    |)
-
-[//]: # (| `training_Fake news comments_trial_11`| 99.11%       | 49.92%         | 99.42%           | 99.47%     | roberta-base    |)
-
-[//]: # (| `training_Fake news comments_trial_10`| 97.76%       | 51.37%         | 99.34%           | 99.39%     | roberta-base    |)
-
-[//]: # (| `training_Fake news comments_trial_14`| 98.79%       | 50.04%         | 99.14%           | 99.21%     | roberta-base    |)
-
-[//]: # (| `training_Fake news comments_trial_8` | 98.10%       | 49.99%         | 98.94%           | 99.02%     | roberta-base    |)
-
-[//]: # ()
-[//]: # ()
-[//]: # (This improves readability and ensures the table adheres to Markdown styling conventions.)
-
-[//]: # ()
-[//]: # (**Final Parameters**:  )
-
-[//]: # (```json)
-
-[//]: # ({)
-
-[//]: # (    {)
-
-[//]: # (  "BATCH_SIZE": 8,)
-
-[//]: # (  "EPOCHS": 3,)
-
-[//]: # (  "THRESHOLD_PROBABILITIES_MODEL": 0.5,)
-
-[//]: # (  "MAX_TOKENS": 512,)
-
-[//]: # (  "LEARNING_RATE": 0.002500000075,)
-
-[//]: # (  "WEIGHT_DECAY": 0.01,)
-
-[//]: # (  "DROPOUT_VALUE": 0.139164305582066,)
-
-[//]: # (  "WARMUP_RATIO": 0.192605760830724,)
-
-[//]: # (  "OPTIMIZER_NAME": "AdamW",)
-
-[//]: # (  "SCHEDULER": {)
-
-[//]: # (    "TYPE": "LinearScheduleWithWarmup",)
-
-[//]: # (    "WARMUP_RATIO": 0.192605760830724)
-
-[//]: # (  })
-
-[//]: # (})
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (This its the final result Accuracy=99%, F1 Score=99%)
-
-[//]: # ()
-[//]: # (Full training notebook: [010_roberta_all_data]&#40;010_roberta_all_data.ipynb&#41;)
-
-[//]: # ()
-[//]: # (---)
-
-[//]: # ()
-[//]: # (## Model Explainability)
-
-[//]: # ()
-[//]: # (We analyzed incorrect predictions to identify potential biases, revealing features like word length and specific tokens influencing the model.  )
-
-[//]: # ()
-[//]: # (Good prediction)
-
-[//]: # (![Explanation Example 1]&#40;img/prediction_sentence_1.png&#41;  )
-
-[//]: # ()
-[//]: # (Bad prediction)
-
-[//]: # (![Explanation Example 2]&#40;img/prediction_sentence_2.png&#41;  )
-
-[//]: # ()
-[//]: # (Notebook: [011_XAI_roberta]&#40;011_XAI_roberta.ipynb&#41;)
-
-[//]: # ()
-[//]: # (---)
-
-[//]: # ()
-[//]: # (## Prediction Service)
-
-[//]: # ()
-[//]: # (Deployed the model using Mlflow and tested local inference times:  )
-
-[//]: # ()
-[//]: # (| **Response Time**             | **Measure**       |)
-
-[//]: # (|-------------------------------|-------------------|)
-
-[//]: # (| 100 iterations &#40;1 sample&#41;     | 5.9273 seconds    |)
-
-[//]: # (| Average time per sample        | 0.0593 seconds    |)
-
-[//]: # ()
-[//]: # (Notebook: [012_Inference_time]&#40;012_Inference_time.ipynb&#41;)
-
-[//]: # ()
-[//]: # (---)
-
-[//]: # ()
-[//]: # (## Next Steps)
-
-[//]: # ()
-[//]: # (- Experiment with thresholds to improve accuracy.)
-
-[//]: # (- Generate synthetic data to enhance generalization.)
-
-[//]: # (- Retrain with fewer epochs to mitigate overfitting.)
+- Personalize the quantity or the themes the model can select for the question to ask
 
 ---
 
